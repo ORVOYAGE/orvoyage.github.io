@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ORVOYAGE — Comparateur de voyages</title>
+<style>
+:root{--blue:#075b8a;--deep:#063c60;--gold:#e8b83f;--light:#f5f9fb;--text:#173042;--muted:#6c7d88;--white:#fff}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:var(--light)}
+header{background:linear-gradient(135deg,#064a72,#087ca2);color:white;padding:18px 5%}
+.nav{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:25px;font-weight:900;letter-spacing:.5px}.logo b{color:var(--gold)}
+.nav button{border:1px solid #ffffff55;background:#ffffff18;color:#fff;border-radius:22px;padding:9px 15px}
+.hero{background:linear-gradient(180deg,#087ca2 0,#0b6d91 65%,#eaf4f6 65%);padding:42px 5% 70px}
+.hero-inner{max-width:1180px;margin:auto;color:white}.hero h1{font-size:clamp(30px,5vw,52px);margin:12px 0 8px}.hero p{font-size:18px;margin:0 0 25px}
+.search{background:white;border-radius:20px;padding:16px;box-shadow:0 18px 45px #063c6030;display:grid;grid-template-columns:1.1fr 1.1fr 1fr .7fr auto;gap:10px;color:var(--text)}
+.field{padding:12px;border:1px solid #d9e3e8;border-radius:12px;background:#fff}.field small{display:block;color:var(--muted);font-size:11px}.field strong{font-size:14px}
+.primary{border:0;border-radius:12px;background:var(--gold);color:#193449;font-weight:800;padding:0 20px;cursor:pointer}
+main{max-width:1180px;margin:-25px auto 50px;padding:0 5%}.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:25px}
+.tab{background:#fff;border:1px solid #e3eaee;border-radius:15px;padding:17px;text-align:center;font-weight:750;box-shadow:0 5px 18px #16384b0d;cursor:pointer}.tab.active{border-color:var(--gold);box-shadow:0 5px 20px #e8b83f35}
+.layout{display:grid;grid-template-columns:235px 1fr;gap:20px}.panel,.card{background:white;border-radius:18px;padding:20px;box-shadow:0 5px 20px #16384b10}.filters h3{margin-top:0}.filters label{display:block;margin:14px 0;color:#425663;font-size:14px}.results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sort{padding:9px;border:1px solid #dbe4e8;border-radius:10px;background:white}
+.offer{display:grid;grid-template-columns:1fr auto;gap:15px;align-items:center;margin-bottom:13px}.offer h3{margin:0 0 7px}.meta{color:var(--muted);font-size:14px}.price{font-size:25px;font-weight:900;color:var(--deep);text-align:right}.price small{display:block;font-size:11px;color:var(--muted);font-weight:500}.offer button{margin-top:8px;border:0;background:var(--blue);color:#fff;border-radius:10px;padding:10px 15px;font-weight:750;cursor:pointer}
+.dest{margin-top:30px}.dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.dest-card{height:145px;border-radius:16px;padding:18px;color:white;display:flex;align-items:end;font-weight:850;background:linear-gradient(180deg,#ffffff00,#0009),linear-gradient(135deg,#75a9b8,#075b8a)}
+footer{background:#063c60;color:white;padding:30px 5%;text-align:center}
+.notice{font-size:12px;color:var(--muted);margin-top:14px}
+@media(max-width:850px){.search{grid-template-columns:1fr 1fr}.primary{min-height:48px}.layout{grid-template-columns:1fr}.filters{display:none}.tabs{grid-template-columns:repeat(2,1fr)}.dest-grid{grid-template-columns:1fr 1fr}.hero{padding-bottom:55px}}
+@media(max-width:520px){.search{grid-template-columns:1fr}.tabs{grid-template-columns:1fr 1fr}.dest-grid{grid-template-columns:1fr}.offer{grid-template-columns:1fr}.price{text-align:left}.hero p{font-size:15px}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="logo"><b>OR</b>VOYAGE</div><button>Menu</button></div></header>
+
+<section class="hero">
+ <div class="hero-inner">
+  <div>🌊 Voyagez autrement</div>
+  <h1>Comparez avant de réserver.</h1>
+  <p>Vols, hôtels, séjours, voitures et activités réunis au même endroit.</p>
+  <div class="search">
+   <div class="field"><small>Départ</small><strong>Paris</strong></div>
+   <div class="field"><small>Destination</small><strong>Djerba</strong></div>
+   <div class="field"><small>Dates</small><strong>02 août → 12 août</strong></div>
+   <div class="field"><small>Voyageurs</small><strong>2 voyageurs</strong></div>
+   <button class="primary" onclick="showSearch()">Comparer</button>
+  </div>
+ </div>
+</section>
+
+<main>
+ <div class="tabs">
+  <div class="tab active" onclick="setType(this,'✈️ Vols')">✈️ Vols</div>
+  <div class="tab" onclick="setType(this,'🏨 Hôtels')">🏨 Hôtels</div>
+  <div class="tab" onclick="setType(this,'🌴 Séjours')">🌴 Séjours</div>
+  <div class="tab" onclick="setType(this,'🚗 Voitures')">🚗 Voitures</div>
+  <div class="tab" onclick="setType(this,'🎟️ Activités')">🎟️ Activités</div>
+ </div>
+
+ <section class="layout">
+  <aside class="panel filters">
+   <h3>Filtrer</h3>
+   <label>💰 Prix<br><input type="range" min="50" max="1000" value="400" style="width:100%"></label>
+   <label>🕐 Heure de départ<br><input type="checkbox"> Matin<br><input type="checkbox"> Après-midi<br><input type="checkbox"> Soir</label>
+   <label>🔄 <input type="checkbox"> Direct uniquement</label>
+   <label>🧳 <input type="checkbox"> Bagage inclus</label>
+  </aside>
+
+  <div>
+   <div class="results-head"><div><strong id="title">Vols</strong><br><span class="meta">24 offres trouvées</span></div>
+   <select class="sort"><option>Recommandé</option><option>Moins cher</option><option>Plus rapide</option></select></div>
+
+   <div class="card offer"><div><h3>✈️ Transavia</h3><div class="meta">Paris → Djerba · 06:30 → 09:10 · Direct · 2h40</div><button onclick="partner()">Voir l'offre →</button></div><div class="price">189 €<small>prix total indicatif</small></div></div>
+   <div class="card offer"><div><h3>✈️ Nouvelair</h3><div class="meta">Paris → Djerba · 08:15 → 10:55 · Direct · 2h40</div><button onclick="partner()">Voir l'offre →</button></div><div class="price">204 €<small>prix total indicatif</small></div></div>
+   <div class="card offer"><div><h3>✈️ Tunisair</h3><div class="meta">Paris → Djerba · 11:20 → 15:35 · 1 escale · 4h15</div><button onclick="partner()">Voir l'offre →</button></div><div class="price">218 €<small>prix total indicatif</small></div></div>
+   <p class="notice">Prototype V1 : les offres affichées sont des exemples. Les prix réels devront être fournis par des partenaires/API avant le lancement commercial.</p>
+  </div>
+ </section>
+
+ <section class="dest"><h2>Destinations populaires</h2><div class="dest-grid">
+  <div class="dest-card">🇹🇳 Tunisie</div><div class="dest-card">🇪🇸 Espagne</div><div class="dest-card">🇬🇷 Grèce</div><div class="dest-card">🇮🇹 Italie</div>
+ </div></section>
+</main>
+
+<footer><strong>ORVOYAGE</strong><br>Comparer. Choisir. Voyager.<br><small>© 2026 ORVOYAGE — Prototype V1</small></footer>
+
+<script>
+function setType(el,type){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('title').textContent=type.replace(/^.\s/,'');}
+function showSearch(){alert('Recherche ORVOYAGE lancée. Dans la version connectée, les résultats viendront des partenaires.');}
+function partner(){alert('Dans la V1 connectée, ce bouton redirigera vers le partenaire de réservation.');}
+</script>
+</body>
+</html>
